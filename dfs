@@ -1,0 +1,26 @@
+import sys
+from typing import List
+sys.setrecursionlimit(10**8)
+class Solution:
+    def countDistinctIslands(self, grid : List[List[int]]) -> int:
+        def dfs(i,j,grid,vis,v,brow,bcol,n,m):
+            vis[i][j]=1
+            v.append((i-brow,j-bcol))
+            delrow=[-1,0,1,0]
+            delcol=[0,-1,0,1]
+            for k in range(4):
+                nr=i+delrow[k]
+                nc=j+delcol[k]
+                if nr>=0 and nc>=0 and nr<n and nc<m and grid[nr][nc]==1 and vis[nr][nc]==0:
+                    dfs(nr,nc,grid,vis,v,brow,bcol,n,m)
+        n=len(grid)
+        m=len(grid[0])
+        vis=[[0 for i in range(m)]for j in range(n)]
+        s=set()
+        for i in range(n):
+            for j in range(m):
+                if grid[i][j]==1 and vis[i][j]==0:
+                    v=[]
+                    dfs(i,j,grid,vis,v,i,j,n,m)
+                    s.add(tuple(v))
+        return len(s)
